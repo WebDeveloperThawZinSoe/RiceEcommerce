@@ -14,12 +14,13 @@
     7. Pages
     
 */
+
 @import url(../icons/feather/css/iconfont.css);
 :root {
   --gradient: linear-gradient( to right, rgb(255,64,62) 0%, rgb(255,129,27) 100%);
   --gradient-sec: linear-gradient( to right, rgb(57,26,166) 0%, rgb(6,163,245) 100%);
-  --primary: rgb(255,64,62);
-  --secondary: #24262B;
+  --primary: black;
+  --secondary: #f9bd5d;
   --primary-hover: black;
   --primary-dark: black;
   --rgba-primary-1: rgba(13, 119, 94, 0.1);
@@ -32206,7 +32207,7 @@ a {
   background-color: #24262B; }
   .main-bar.dark .browse-category-menu .category-btn {
     color: #fff;
-    background-color: #3E4043; }
+    background-color: black; }
   @media only screen and (min-width: 991px) {
     .main-bar.dark .header-nav .nav > li > a {
       color: #fff; }

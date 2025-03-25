@@ -1,17 +1,60 @@
 @extends('web.master')
 @section('body')
+<style>
+.content-inner-1 {
+    padding-top: 100px !important;
+}
+</style>
+<style>
+.card-container {
+    position: relative;
+    overflow: hidden;
+    height: 300px;
+    border-radius: 10px;
+}
 
+.card-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s ease;
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.5s ease;
+}
+
+.card-container:hover img {
+    filter: blur(5px) brightness(0.7);
+}
+
+.card-container:hover .card-overlay {
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    background: rgba(0, 0, 0, 0.7);
+}
+</style>
 <div class="page-content bg-white">
     @php
-    $photos = App\Models\Gallery::orderBy("sort","desc")->get();
-    //$photo = $photos->image;
+    $photos = App\Models\Gallery::orderBy("sort", "desc")->get();
     @endphp
+
     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             @foreach($photos as $key => $photo)
             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                <img src="{{ asset($photo->image) }}" class="d-block w-100" alt="Image {{ $key + 1 }}"
-                    style="max-height:500px !important;min-height:300px !important">
+                <img src="{{ asset($photo->image) }}" style="border-radius:0px !important;"
+                    class="d-block w-100 carousel-image" alt="Image {{ $key + 1 }}">
             </div>
             @endforeach
         </div>
@@ -25,66 +68,91 @@
         </button>
     </div>
 
+    <style>
+    .carousel-item {
+        height: 600px;
+    }
+
+    .carousel-image {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 992px) {
+        .carousel-item {
+            height: 500px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .carousel-item {
+            height: 350px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .carousel-item {
+            height: 250px;
+        }
+    }
+    </style>
 
 
-    <!-- icon-box1 -->
-    <section class="content-inner-3 overlay-white-dark"
-        style="background-image: url('images/background/bg2.jpg'); background-repeat: no-repeat; background-size: cover;">
-        <div class="container">
-            <div class="row justify-content-center gx-sm-1">
-                <div class="col-lg-4 col-md-4 col-sm-4 p-b30 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="icon-bx-wraper style-1 text-center">
-                        <div class="icon-bx">
-                            <i class="flaticon flaticon-fast-delivery"></i>
-                        </div>
-                        <div class="icon-content">
-                            <h3 class="dz-title m-b0">FREE SHIPPING</h3>
-                            <div class="square"></div>
-                            <p class="font-20">Enjoy free shipping on all orders - no minimum purchase required.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 p-b30 wow fadeInUp" data-wow-delay="0.2s">
-                    <div class="icon-bx-wraper style-1 text-center">
-                        <div class="icon-bx">
-                            <i class="flaticon flaticon-message"></i>
-                        </div>
-                        <div class="icon-content">
-                            <h3 class="dz-title m-b0">24/7 SUPPORT</h3>
-                            <div class="square"></div>
-                            <p class="font-20">Our team is available 24/7 to help with any questions or concerns.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 p-b30 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="icon-bx-wraper style-1 text-center">
-                        <div class="icon-bx">
-                            <i class="flaticon flaticon-money-back-guarantee"></i>
-                        </div>
-                        <div class="icon-content">
-                            <h3 class="dz-title m-b0">MONEY BACK</h3>
-                            <div class="square"></div>
-                            <p class="font-20">We offer a 100% money-back guarantee for your satisfaction.</p>
-                        </div>
-                    </div>
+    <!-- Intro Start -->
+    <div class="container py-5">
+        <div class="text-center">
+            <h1 class="fw-bold text-primary">{{ env('APP_NAME') }}</h1>
+            <p class="mt-3 text-muted px-md-5">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis eligendi quo, natus unde quaerat
+                itaque totam quas minima, adipisci distinctio minus ipsam! Nulla laboriosam exercitationem amet debitis
+                ullam doloribus blanditiis.
+            </p>
+            <center>
+                <br>
+                <hr style="width:70%;" class="mt-4">
+            </center>
+        </div>
+    </div>
+    <!-- Intro End -->
+
+
+
+    <div class="container mt-5">
+        <div class="row g-4">
+            <h3>Main Category </h3>
+            @php
+            $categories = App\Models\ProductCategory::get();
+            @endphp
+            @foreach($categories as $category)
+            <div class="col-md-6">
+                <div class="card-container">
+                    <a href="/products/category/{{$category->id}}">
+                        <img src="{{ asset('images/product_categories/' . $category->icon) }}" alt="Image 1">
+                        <div class="card-overlay">{{ $category->name }}</div>
+                    </a>
                 </div>
             </div>
+            @endforeach
+
         </div>
-    </section>
-    <!-- icon-box1 End-->
+    </div>
 
 
+    <center>
+        <br>
+        <hr style="width:70%;" class="mt-4">
+    </center>
 
-
-
-    <!--Recommend Section Start-->
     <section class="content-inner-1">
         <div class="container">
             <div class="row">
 
                 <div class="col-xl-12">
                     <div class="wow fadeInUp" data-wow-delay="0.3s">
-                        <h3 class="title">Most popular products</h3>
+                        <h3 class="title">OUr Latest products</h3>
                         <div class="site-filters clearfix d-flex align-items-center">
 
                             <a href="/products"
@@ -165,47 +233,30 @@
             </div>
         </div>
     </section>
-    <!--Recommend Section End-->
 
-    <!-- Newsletter -->
-    <!--<section class="overlay-black-light newsletter-wrapper style-2"-->
-    <!--    style="background-image: url('{{ asset('web/images/background/bg4.jpg') }}'); background-repeat: no-repeat; background-size: cover;">-->
 
-    <!--    <div class="container">-->
-    <!--        <div class="subscride-inner wow fadeInUp" data-wow-delay="0.2s">-->
-    <!--            <div class="row justify-content-center text-center">-->
-    <!--                <div class="col-xl-12 col-lg-12">-->
-    <!--                    <div class="section-head">-->
-    <!--                        <h3 class="title">SUBSCRIBE TO OUR NEWSLETTER</h3>-->
-    <!--                        <p class="sub-title">Get latest news, offers and discounts.</p>-->
-    <!--                    </div>-->
-    <!--                    <form class="dzSubscribe" action="https://mooncart.dexignzone.com/xhtml/script/mailchamp.php"-->
-    <!--                        method="post">-->
-    <!--                        <div class="dzSubscribeMsg"></div>-->
-    <!--                        <div class="form-group">-->
-    <!--                            <div class="input-group mb-0">-->
-    <!--                                <input name="dzEmail" required="required" type="email" class="form-control"-->
-    <!--                                    placeholder="Your Email Address">-->
-    <!--                                <div class="input-group-addon">-->
-    <!--                                    <button name="submit" value="Submit" type="submit" class="btn">-->
-    <!--                                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none">-->
-    <!--                                            <path d="M4.20972 10.7344H15.8717" stroke="#0D775E" stroke-width="2"-->
-    <!--                                                stroke-linecap="round" stroke-linejoin="round" />-->
-    <!--                                            <path d="M10.0408 4.90112L15.8718 10.7345L10.0408 16.5678"-->
-    <!--                                                stroke="#0D775E" stroke-width="2" stroke-linecap="round"-->
-    <!--                                                stroke-linejoin="round" />-->
-    <!--                                        </svg>-->
-    <!--                                    </button>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </form>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <!--</section>-->
+    <!-- Our Feature -->
+    <section class="overlay-black-light our-features"
+        style="background-image: url('images/image1.jpg'); background-repeat:no-repeat; background-size:cover;">
+        <div class="container">
+            <div class="features-content wow ">
+                <h2>Enjoy the best quality and features made by MoonCart.</h2>
+                <a href="/proudcts" class="btn btn-light">Shop Now</a>
+            </div>
+        </div>
+    </section>
+    <!-- Our Feature End -->
 
+    <!-- Get In Touch -->
+    <section class="get-in-touch wow " style="background-color:black !important;">
+        <div class="m-r100 m-md-r0 m-sm-r0">
+            <h3 class="dz-title mb-lg-0 mb-3">Questions ?
+                <span>Our experts will help find the grar that’s right for you</span>
+            </h3>
+        </div>
+        <a href="/faq" class="btn btn-light">Get In Touch</a>
+    </section>
+    <!-- Get In Touch End -->
 
 </div>
 

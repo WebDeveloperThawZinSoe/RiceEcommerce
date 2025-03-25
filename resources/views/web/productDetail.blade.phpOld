@@ -17,6 +17,7 @@
 
 .variant-group {
     margin-bottom: 10px;
+    display:block !important;
 }
 </style>
 <div class="page-content">
@@ -42,22 +43,21 @@
                                     <!-- Main Image Display -->
                                     <div class="swiper-slide">
                                         <div class="dz-media DZoomImage">
-                                            <a id="mainImageLink" class="mfp-link lg-item" href="{{ asset($detail_product->image) }}"
-                                                data-src="{{ asset($detail_product->image) }}">
-                                                <i class="feather icon-maximize dz-maximize top-right"></i>
+                                            <a id="mainImageLink" data-lightbox="product-zoom"
+                                                href="{{ asset($detail_product->image) }}">
+                                                <!-- <i class="feather icon-maximize dz-maximize top-right"></i> -->
                                             </a>
-                                    <!-- Main Image -->
-                                    <img id="mainImage" src="{{ asset($detail_product->image) }}" alt="image">
+                                            <!-- Main Image -->
+                                            <img id="mainImage" src="{{ asset($detail_product->image) }}" alt="image">
                                         </div>
                                     </div>
-                     
+
 
                                     <!-- Other Images -->
                                     @if(!empty($detail_product->images))
                                     <div class="swiper-slide">
                                         <div class="dz-media DZoomImage">
-                                            <a class="mfp-link lg-item" href="{{ asset($detail_product->image) }}"
-                                                data-src="{{ asset($detail_product->image) }}">
+                                            <a data-lightbox="product-zoom" href="{{ asset($detail_product->image) }}">
                                                 <i class="feather icon-maximize dz-maximize top-right"></i>
                                             </a>
                                             <img src="{{ asset($detail_product->image) }}" alt="image">
@@ -66,8 +66,7 @@
                                     @foreach($detail_product->images as $image)
                                     <div class="swiper-slide">
                                         <div class="dz-media DZoomImage">
-                                            <a class="mfp-link lg-item" href="{{ asset($image) }}"
-                                                data-src="{{ asset($image) }}">
+                                            <a data-lightbox="product-zoom" href="{{ asset($image) }}">
                                                 <i class="feather icon-maximize dz-maximize top-right"></i>
                                             </a>
                                             <img src="{{ asset($image) }}" alt="image">
@@ -85,7 +84,6 @@
                                     @if(!empty($detail_product->images))
                                     @foreach($detail_product->images as $image)
                                     <div class="swiper-slide">
-                                        <!-- Thumbnail Images with Click Event -->
                                         <img src="{{ asset($image) }}" alt="image"
                                             onclick="changeMainImage('{{ asset($image) }}')">
                                     </div>
@@ -121,7 +119,13 @@
                                         </span>
                                     </div>
                                     @endif
-
+                                    @if($detail_product->pre_order == 1)
+                                    <div class="product-tag">
+                                        <span class="badge bg-purple mb-2">
+                                            Pre Order
+                                        </span>
+                                    </div>
+                                    @endif
                                     <h4 class="title mb-1"><a href="#">{{$detail_product->name}}</a></h4>
                                 </div>
                             </div>
@@ -133,8 +137,9 @@
                                 $truncatedDescription = $wordCount > 100 ? implode(' ', array_slice($words, 0, 100)) .
                                 '...' : $description;
                                 @endphp
-                                {{$detail_product->short_description}}
+                                {!! $detail_product->short_description !!}
                             </p>
+                            
                             <div class="meta-content m-b20 d-flex align-items-end">
                                 <div class="me-3">
                                     <label class="form-label">Price</label>
@@ -159,49 +164,78 @@
                                         @endphp
                                         @endif
                                     </span>
+                                     <!-- Variant Expiry Date -->
+                                @if($detail_product->product_type == 1)
+                                    @if($detail_product->variants->count() > 0)
+                                        @php
+                                            $firstVariant = $detail_product->variants->first();
+                                        @endphp
+                                        @if(isset($firstVariant->expire_date))
+                                            <div class="variant-expire-date mt-2">
+                                                <label class="form-label">Expire Date:</label>
+                                                <span>{{ $firstVariant->expire_date }}</span>
+                                            </div>
+                                        @endif
+                                    @endif
+                                @endif
+                                @if($detail_product->product_type == 2)
+                                 @if($detail_product->variants->count() > 0)
+                                        @php
+                                            $firstVariant = $detail_product->variants->first();
+                                        @endphp
+                                        @if(isset($firstVariant->expire_date))
+                                            <div class="variant-expire-date mt-2">
+                                                <label class="form-label">Expire Date:</label>
+                                                <span id="product-expire">{{ $firstVariant->expire_date }}</span>
+                                            </div>
+                                        @endif
+                                    @endif
+                                @endif
                                 </div>
                             </div>
 
+ 
                             @if($detail_product->variants->count() > 0)
-                            <div class="product-variants">
-                                <label>Select Variant:</label>
-                                <div class="variant-buttons d-flex flex-wrap gap-2">
-                                    @php
-                                    $groupedVariants = $detail_product->variants->groupBy('attribute_name');
-                                    @endphp
-                                    @foreach($groupedVariants as $attributeName => $variants)
-                                    <div class="variant-group">
-                                        <h5 class="variant-attribute-name">{{ $attributeName }}</h5>
-                                        @foreach($variants as $variant)
-                                        @if($variant->stock != 0)
+                                <div class="product-variants">
+                                    <label>Select Variant:</label>
+                                    <div class="variant-buttons d-flex flex-wrap gap-2">
                                         @php
-                                        $varaint_product_price = $variant->price;
-                                        $v_discount_type = $variant->discount_type;
-                                        $v_discount_amount = $variant->discount_amount;
-                                        if($v_discount_type == 0){
-                                        $varaint_product_price = $varaint_product_price;
-                                        }elseif($v_discount_type == 1){
-                                        $varaint_product_price = $varaint_product_price - $v_discount_amount ;
-                                        }elseif($v_discount_amount == 2){
-                                        $varaint_product_price = $varaint_product_price - ( $v_discount_amount *
-                                        ($v_discount_amount/100) ) ;
-                                        }
-
-
+                                            // Sort by attribute_name in ascending order
+                                            $groupedVariants = $detail_product->variants->sortBy('attribute_value')->groupBy('attribute_name');
                                         @endphp
-                                        <label class="btn btn-outline-secondary variant-option"
-                                            data-price="{{ $varaint_product_price }}"
-                                            data-image="{{ asset($variant->image) }}">
-                                            <input type="radio" name="product_variant" value="{{ $variant->id }}"
-                                                class="d-none">
-                                            {{ $variant->attribute_value ?? 'Default' }}
-                                        </label>
-                                        @endif
+                                        @foreach($groupedVariants as $attributeName => $variants)
+                                            <div class="variant-group" style="width:100% !important;">
+                                                <h5 class="variant-attribute-name">{{ $attributeName }}</h5>
+                                                @foreach($variants as $variant)
+                                                    @if($variant->stock != 0 && $variant->status == 1)
+                                                        @php
+                                                            $varaint_product_price = $variant->price;
+                                                            $v_discount_type = $variant->discount_type;
+                                                            $v_discount_amount = $variant->discount_amount;
+                                                            $v_expire = $variant->expire_date ?? "N/A";
+                                                            if ($v_discount_type == 0) {
+                                                                $varaint_product_price = $varaint_product_price;
+                                                            } elseif ($v_discount_type == 1) {
+                                                                $varaint_product_price = $varaint_product_price - $v_discount_amount;
+                                                            } elseif ($v_discount_type == 2) {
+                                                                $varaint_product_price = $varaint_product_price - ($varaint_product_price * ($v_discount_amount / 100));
+                                                            }
+                                                        @endphp
+                                                        <label class="btn btn-outline-secondary variant-option"
+                                                               data-price="{{ $varaint_product_price }}"
+                                                               data-image="{{ asset($variant->image) }}"
+                                                               data-expire="{{$v_expire}}"
+                                                               >
+                                                            <input type="radio" name="product_variant" value="{{ $variant->id }}" class="d-none">
+                                                            {{ $variant->attribute_value ?? 'Default' }}
+                                                        </label> 
+                                                    @endif
+                                                @endforeach
+                                                  
+                                            </div>
                                         @endforeach
                                     </div>
-                                    @endforeach
                                 </div>
-                            </div>
                             @endif
 
                             <div class="product-num">
@@ -234,8 +268,13 @@
                 </div>
 
                 <script>
+                // JavaScript function to change the main image and update Lightbox link
+                function changeMainImage(imageUrl) {
+                    document.getElementById('mainImage').src = imageUrl;
+                    document.getElementById('mainImageLink').href = imageUrl;
+                }
 
-                // Handle variant selection
+                // Variant selection event handler
                 document.querySelectorAll('.variant-option').forEach(button => {
                     button.addEventListener('click', function() {
                         button.querySelector('input').checked = true;
@@ -250,16 +289,21 @@
                         // Set the selected variant ID in the hidden form field
                         document.getElementById('variant_id').value = button.querySelector('input')
                             .value;
+                            
+                        // Update the expire date
+                         const variantExpireDate = button.getAttribute('data-expire');
+                        document.getElementById('product-expire').innerText = variantExpireDate ;
 
                         // Update main image based on selected variant's image
                         const variantImage = button.getAttribute('data-image');
                         if (variantImage) {
-                            document.getElementById('mainImage').src = variantImage;
-                            document.getElementById('mainImageLink').href = variantImage;
-                           
+                            changeMainImage(variantImage);
                         }
+                        
+                        
                     });
                 });
+               
 
                 // Handle quantity increase and decrease
                 const quantityInput = document.getElementById('quantity');

@@ -6,7 +6,7 @@
         <div class="card-body">
             <h2>Product Detail</h2>
             @if($product->pre_order == 1)
-            <span class="badge bg-warning" style="color:white !important;">Pre Order</span>
+            <!-- <span class="badge bg-warning" style="color:white !important;">Pre Order</span> -->
             @endif
             <p><strong>Name:</strong> {{ $product->name }}</p>
             <p><strong>Price:</strong> {{ $product->price }} Ks</p>
@@ -88,8 +88,9 @@
     @endif
 
 
+    <div style="display:none !important;">
     @if($product->supply->count() > 0)
-        <div class="card">
+        <div class="card" >
             <div class="card-body">
                 <h3>Supply Logs</h3>
                 <table class="table table-bordered">
@@ -141,5 +142,6 @@
             </div>
         </div>
     @endif
+    </div>
 </div>
 @endsection

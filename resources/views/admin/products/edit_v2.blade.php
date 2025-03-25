@@ -40,7 +40,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label">Stock</label>
-                    <input type="text" class="form-control" 
+                    <input    type="text" class="form-control" 
                         value="{{ old('name', $product->stock) }}" readonly>
                 </div>
                 <div class="mb-3">
@@ -67,7 +67,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="brand">Brand (<span style="color:red"> * </span>)</label>
                     <select id="brand" name="brand_id" class="form-control" required>
                         <option value="">Select Brand</option>
@@ -78,7 +78,7 @@
                         </option>
                         @endforeach
                     </select>
-                </div>
+                </div> -->
                 
                   
 
@@ -177,7 +177,7 @@
                                 <div class="mb-3">
                                     <label  class="form-label">Stock
                                         </label>
-                                    <input type="text" class="form-control" 
+                                    <input  type="text" class="form-control" 
                                          value="{{ old('price', $variant->stock) }}" readonly>
                                 </div>
 
@@ -238,9 +238,7 @@
                                     onclick="return confirm('Are you sure you want to delete this variant?')">Delete</button>
                             </form>
                             <br>
-                            <a href="/admin/supply/managment/v2/{{$variant->id}}" class="btn btn-info btn-sm mt-3 float-end">
-                            Manage Stock
-                            </a>
+                           
                         </div>
                     </div>
                 </div>
@@ -285,7 +283,7 @@
 
                     <div class="form-group">
                         <label for="stock">Stock ( <span style="color:red"> * </span> ) </label>
-                        <input type="number" class="form-control" name="stock" required>
+                        <input type="number"  value="9999999"  class="form-control" name="stock" required>
                     </div>
 
                     <div class="form-group">

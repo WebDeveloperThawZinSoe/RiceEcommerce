@@ -56,14 +56,14 @@
                         </div>
 
                         <!-- Optional Google SSO button -->
-                        <div class="text-center">
+                        <!-- <div class="text-center">
                             <a href="{{ route('auth.provider', 'google') }}"
                                 class="btn btn-outline-primary text-uppercase d-flex align-items-center justify-content-center"
                                 style="padding: 10px 15px; border: 2px solid #4285F4; color: #4285F4; font-weight: bold; font-size: 16px; border-radius: 5px;">
                                 <i class="fab fa-google" style="margin-right: 8px; font-size: 18px;"></i>
                                 Log in with Google
                             </a>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
             </div>

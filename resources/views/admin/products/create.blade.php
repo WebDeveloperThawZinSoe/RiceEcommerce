@@ -88,14 +88,7 @@
                     </div>
 
 
-                    <div class="form-group">
-                        <label for="brand">Brand (<span style="color:red"> * </span>)</label>
-                        <select id="brand" name="brand_id" class="form-control" required>
-                            @foreach ($brands as $brand)
-                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    
 
                     <!-- Short Description Field -->
                     <div class="form-group">
@@ -105,7 +98,7 @@
 
                     <!-- Description Field -->
                     <div class="form-group">
-                        <label for="description">Description (<span style="color:red"> * </span>)</label>
+                        <label for="description">Description </label>
                         <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
                     </div>
 
@@ -117,7 +110,7 @@
                         </div>
                         <div class="form-group">
                             <label for="stock">Stock (<span style="color:red"> * </span>)</label>
-                            <input type="number" class="form-control" name="stock" required>
+                            <input type="number" value="9999999" class="form-control" name="stock" required>
                         </div>
 
                         <!-- Thumbnail Image Field with Preview -->
@@ -136,7 +129,7 @@
 
                     </div>
                     <!-- Discount Type and Amount Fields -->
-                    <div class="form-group">
+                    <div class="form-group" style="display:none !important;">
                         <label for="pre_order">Pre Order</label>
                         <select id="pre_order" name="pre_order" class="form-control">
                             <option value="0" selected>No</option>

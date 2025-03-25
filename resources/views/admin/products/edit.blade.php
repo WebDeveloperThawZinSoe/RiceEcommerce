@@ -63,7 +63,7 @@
                 </div>
 
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="brand">Brand (<span style="color:red"> * </span>)</label>
                     <select id="brand" name="brand_id" class="form-control" required>
                         <option value="">Select Brand</option>
@@ -74,12 +74,12 @@
                         </option>
                         @endforeach
                     </select>
-                </div>
+                </div> -->
 
                 <!-- Stock and Minimum Quantity -->
                 <div class="mb-3">
                     <label for="stock" class="form-label">Stock</label>
-                    <input type="number" class="form-control" readonly id="stock" name="stock"
+                    <input type="number" class="form-control"  id="stock" name="stock"
                         value="{{ old('stock', $product->stock) }}">
                 </div>
 
@@ -147,9 +147,9 @@
                 <!-- Submit Button -->
                 <button type="submit" class="btn btn-warning float-end">Update Product</button>
                 <!-- Button to Trigger Modal -->
-                <a href="/admin/supply/managment/v1/{{$product->id}}" class="btn btn-info float-end" ">
+                <!-- <a href="/admin/supply/managment/v1/{{$product->id}}" class="btn btn-info float-end" ">
                     Manage Stock
-                    </a>
+                    </a> -->
 
 
             </form>

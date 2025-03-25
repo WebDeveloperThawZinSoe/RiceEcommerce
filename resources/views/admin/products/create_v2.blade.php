@@ -88,7 +88,7 @@
                     </div>
 
                     <!-- Brand Field -->
-                    <div class="form-group">
+                    <div class="form-group" style="display:none !important">
                         <label for="brand">Brand (<span style="color:red"> * </span>)</label>
                         <select id="brand" name="brand_id" class="form-control" required>
                             @foreach ($brands as $brand)
@@ -97,7 +97,7 @@
                         </select>
                     </div>
                      <!-- Discount Type and Amount Fields -->
-                     <div class="form-group">
+                     <div class="form-group" style="display:none !important;">
                         <label for="pre_order">Pre Order</label>
                         <select id="pre_order" name="pre_order" class="form-control">
                             <option value="0" selected>No</option>
@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Variant Stock ( <span style="color:red"> * </span> ) </label>
-                                        <input type="number" class="form-control" name="variants[0][stock]" required>
+                                        <input type="number" value="9999999" class="form-control" name="variants[0][stock]" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Variant Image ( <span style="color:red"> * </span> ) </label>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Variant Stock</label>
-                                <input type="number" class="form-control" name="variants[${variantIndex}][stock]" required>
+                                <input type="number"  value="9999999" class="form-control" name="variants[${variantIndex}][stock]" required>
                             </div>
                             <div class="form-group">
                                 <label>Variant Image</label>

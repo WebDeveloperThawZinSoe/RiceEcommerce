@@ -48,10 +48,10 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:product_categories,id',
-            'brand_id' => 'required|exists:brands,id',
+            'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'status' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,tif,ico|max:204800', // Single thumbnail image
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,tif,ico|max:2048000', // Multiple images
@@ -80,11 +80,11 @@ class ProductController extends Controller
             'name' => $validatedData['name'],
             'category_id' => $validatedData['category_id'],
             // 'sub_category_id' => $validatedData['sub_category_id'],
-            'brand_id' => $validatedData['brand_id'],
+            'brand_id' => $validatedData['brand_id'] ?? null,
             'price' => $validatedData['price'],
             'stock' => $validatedData['stock'],
-            "short_description" => $request->shortdescription,
-            'description' => $validatedData['description'],
+            "short_description" => $request->shortdescription ??  null,
+            'description' => $validatedData['description'] ?? null,
             'status' => $validatedData['status'],
             'image' => $thumbnailPath ?? null, // Save single image path
             'images' => json_encode($imagePaths), // Save multiple image paths as JSON
@@ -125,8 +125,8 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:product_categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'description' => 'required|string',
+            'brand_id' => 'nullable|exists:brands,id',
+            'description' => 'nullable|string',
             'status' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,tif,ico|max:204800', // Validate main product image
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,tif,ico|max:204800', // Validate multiple images
@@ -162,9 +162,9 @@ class ProductController extends Controller
             'name' => $validatedData['name'],
             'category_id' => $validatedData['category_id'],
             // 'sub_category_id' => $validatedData['sub_category_id'],
-            'brand_id' => $validatedData['brand_id'],
+            'brand_id' => $validatedData['brand_id'] ?? null,
             "short_description" => $request->shortdescription,
-            'description' => $validatedData['description'],
+            'description' => $validatedData['description'] ?? null,
             'status' => $validatedData['status'],
             'image' => $productImagePath, // Store the product image path
             'images' => json_encode($imagePaths), // Save multiple image paths as JSON
@@ -274,7 +274,7 @@ class ProductController extends Controller
             'name' => $validatedData['name'],
             'description' => $validatedData['description'],
             'category_id' => $request->category_id,
-            'brand_id' =>  $request->brand_id,
+            'brand_id' =>  $request->brand_id ?? null,
             "short_description" => $request->shortdescription,
             'status' => $request->status,
             "expire_date" => $request->expire_date
@@ -387,7 +387,7 @@ class ProductController extends Controller
         $product->update([
             'name' => $validatedData['name'],
             'category_id' => $request->category_id,
-            'brand_id' =>$request->brand_id,
+            'brand_id' =>$request->brand_id ?? null,
             'price' => $validatedData['price'],
             'stock' => $validatedData['stock'],
             'status' => $validatedData['status'],

@@ -19,7 +19,7 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
             <div class="extra-nav d-md-flex d-none">
                 <div class="extra-cell">
                     <ul class="navbar-nav header-right">
-                        <li class="nav-item info-box pe-3 d-xl-flex d-none">
+                        <!-- <li class="nav-item info-box pe-3 d-xl-flex d-none">
                             <div class="nav-link">
                                 <div class="dz-icon">
                                     <i class="flaticon flaticon-house"></i>
@@ -40,8 +40,18 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
                                     <h6 class="title mb-0">09770099006</h6>
                                 </div>
                             </div>
+                        </li> -->
+                        <li class="nav-item info-box ">
+                            <div class="nav-link">
+                                <div class="dz-icon">
+                                    <i class="flaticon flaticon-call-center"></i>
+                                </div>
+                                <div class="info-content">
+                                    <span style="color:black">SHOP PHONE</span>
+                                    <h6 class="title mb-0">09770099006</h6>
+                                </div>
+                            </div>
                         </li>
-
                     </ul>
                 </div>
             </div>
@@ -72,10 +82,16 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
 
     <!-- Main Header -->
     <div class="sticky-header main-bar-wraper navbar-expand-lg">
-        <div class="main-bar dark clearfix">
+        <div class="main-bar dark clearfix" style="background-color:#f9bd5d !important;">
             <div class="container clearfix">
                 <!-- Website Logo -->
-              
+               <!-- Website Logo -->
+              <!-- Website Logo -->
+              <div class="logo-header logo-dark">
+                    <a href="/"><h3 style="color:white !important;font-size:22px !important;">{{env('APP_NAME')}}</h3></a>
+                  
+
+                </div>
 
                 <!-- Nav Toggle Button -->
                 <button class="navbar-toggler collapsed navicon justify-content-end" type="button"
@@ -155,7 +171,7 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
                         <a href="/"><img src="{{ asset('images/general_settings/' . $logo->value) }}" alt=""></a>
                     @endif
                     </div>
-                    <div class="browse-category-menu">
+                    <div class="browse-category-menu" >
                         <a href="javascript:void(0);" class="category-btn">
                             <svg class="me-3" width="21" height="13" viewBox="0 0 21 13" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -240,8 +256,7 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
                     <ul class="nav navbar-nav dark-nav">
                         <li><a href="/">Home</a></li>
                         <li><a href="/products">Products</a></li>
-                        <li><a href="/pre_order">Pre Order</a></li>
-                        <li><a href="/brands">Brands</a></li>
+                     
                         <li><a href="/faq">FAQ</a></li>
                         <li><a href="/order_track">Track</a></li>
                         <li><a href="/contact-us">Contact</a></li>
