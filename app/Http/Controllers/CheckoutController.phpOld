@@ -1,0 +1,138 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Card;
+use App\Mail\OrderConfirmation;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Models\CustomerType;
+use App\Models\Type;
+use Spatie\Permission\Models\Role;
+
+class CheckoutController extends Controller
+{
+    public function store(Request $request)
+    {
+        // Validate the form input
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'game_account_id' => 'required|string',
+            'game_account_name' => 'nullable|string',
+            'game_server' => 'nullable|string',
+            'payment_method' => 'required|string',
+            'payment_account_name' => 'required|string',
+            'transaction_id' => 'required|string',
+            'payment_slip' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
+            'password' => 'nullable|min:8|confirmed',  // Validate password if present
+        ]);
+
+        // Handle guest user account creation if password is provided
+        if (Auth::guest() && $request->filled('password')) {
+            $user = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'phone' => $request->input('phone'),
+                'password' => Hash::make($request->input('password')),
+            ]);
+
+            // Assign default role to the user
+            $role = Role::where('name', 'Customer')->first(); 
+                if ($role) {
+                    $user->assignRole($role);
+            }
+
+
+            CustomerType::create([
+                "user_id" => $user->id,
+                "type_id" => $validatedData["account_type"]
+            ]);
+
+            Auth::login($user); // Log the user in
+            $user_id = $user->id;
+        } else {
+            $user_id = Auth::id();
+        }
+
+        $sessionId = session()->getId();
+
+        // Fetch cart items based on the user's login status
+        $cartItems = $user_id
+            ? Card::where("user_id", $user_id)->with('product')->get()
+            : Card::where("session_id", $sessionId)->with('product')->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->back()->with('error', 'Your cart is empty.');
+        }
+
+        // Calculate total price
+        $total = $cartItems->sum(function($cartItem) {
+            return $cartItem->product->price * $cartItem->qty;
+        });
+
+        $discount_amount = $user_id ? Auth::user()->customerType->type->discount_amount ?? 0 : 0;
+        $discounted_total = $total - ($total * ($discount_amount / 100));
+
+        // Handle optional payment slip upload
+        $payment_slip_name = null;
+        if ($request->hasFile('payment_slip')) {
+            $paymentSlip = $request->file('payment_slip');
+            $payment_slip_name = time() . '_' . uniqid() . '.' . $paymentSlip->getClientOriginalExtension();
+            $paymentSlip->move(public_path('payment_slips'), $payment_slip_name);
+        }
+
+
+      
+        $order = Order::create([
+            "name" => $request->name,
+            "phone" => $request->phone,
+            'order_number' => 'ORD-' . strtoupper(uniqid()),
+            'user_id' => $user_id,
+            'payment_method' => $request->input('payment_method'),
+            'payment_slip' => $payment_slip_name,
+            'contact_mail' => $request->input('email'),
+            'account_id' => $request->input('game_account_id'),
+            'account_name' => $request->input('game_account_name'),
+            'gamer_server' => $request->input('game_server'),
+            'total_price' => $discounted_total,
+            'discount_amount' => $discount_amount,
+            'customer_type' => $user_id ? Auth::user()->customerType->type->id : null,
+            'payment_account_name' => $request->input('payment_account_name'),
+            'transaction_no' => $request->input('transaction_id'),
+        ]);
+        // Create order details for each cart item
+        foreach ($cartItems as $cartItem) {
+            OrderDetail::create([
+                'order_number' => $order->order_number,
+                'order_id' => $order->id,
+                'product_id' => $cartItem->product_id,
+                'qty' => $cartItem->qty,
+                'price' => $cartItem->product->price,
+            ]);
+        }
+
+        // Send confirmation email to the customer
+        $orderDetails = [
+            'order' => $order,
+            'cartItems' => $cartItems,
+            'discounted_total' => $discounted_total,
+            'discount_amount' => $discount_amount,
+        ];
+
+        Mail::to($request->input('email'))->send(new OrderConfirmation($orderDetails));
+
+        // Clear the cart after successful order
+        if ($user_id) {
+            Card::where("user_id", $user_id)->delete();
+        } else {
+            Card::where("session_id", $sessionId)->delete();
+        }
+
+        return redirect('/checkout')->with('success', 'Order placed successfully!');
+    }
+}
