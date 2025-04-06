@@ -43,16 +43,16 @@
                                                     <h6 class="price" style="color:black !important;">
                                                         @if($product->product_type == 1)
                                                             @if($product->discount_type == 0)
-                                                                {{ $product->price }} Ks
+                                                                {{ $product->price }} ¥
                                                             @elseif($product->discount_type == 1)
                                                                 <del>{{ $product->price }}</del>
-                                                                {{ $product->price - $product->discount_amount }} Ks
+                                                                {{ $product->price - $product->discount_amount }} ¥
                                                             @elseif($product->discount_type == 2)
                                                                 <del>{{ $product->price }}</del>
-                                                                {{ $product->price - ($product->price * ($product->discount_amount / 100)) }} Ks
+                                                                {{ $product->price - ($product->price * ($product->discount_amount / 100)) }} ¥
                                                             @endif
                                                         @elseif($product->product_type == 2)
-                                                            {{ $product->variants->min('price') }} ~ {{ $product->variants->max('price') }} Ks
+                                                            {{ $product->variants->min('price') }} ~ {{ $product->variants->max('price') }} ¥
                                                         @endif
                                                     </h6>
                                                 </div>
@@ -60,7 +60,7 @@
                                                     <div class="product-tag">
                                                         <span class="badge badge-secondary">Sale |
                                                             @if($product->discount_type == 1)
-                                                                {{ $product->discount_amount }} Ks OFF
+                                                                {{ $product->discount_amount }} ¥ OFF
                                                             @elseif($product->discount_type == 2)
                                                                 {{ $product->discount_amount }}% OFF
                                                             @endif

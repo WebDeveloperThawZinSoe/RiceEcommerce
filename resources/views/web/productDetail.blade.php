@@ -36,52 +36,88 @@
         <div class="container-fluid">
             <div class="row">
                 <!-- Product Gallery Section -->
-                <div class="col-xl-6 col-md-6">
-                    <div class="dz-product-detail sticky-top">
-                        <div class="swiper-btn-center-lr">
-                            <!-- Main Image Display -->
-                            <div class="swiper product-gallery-swiper2">
-                                <div class="swiper-wrapper" id="lightgallery">
-                                    <div class="swiper-slide">
-                                        <div class="dz-media DZoomImage">
-                                            <a id="mainImageLink" data-lightbox="product-zoom"
-                                                href="{{ asset($detail_product->image) }}">
-                                                <img id="mainImage" src="{{ asset($detail_product->image) }}"
-                                                    alt="{{ $detail_product->name }}">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- Additional Images -->
-                                    @foreach($detail_product->images ?? [] as $image)
-                                    <div class="swiper-slide">
-                                        <div class="dz-media DZoomImage">
-                                            <a data-lightbox="product-zoom" href="{{ asset($image) }}">
-                                                <img src="{{ asset($image) }}" alt="{{ $detail_product->name }}">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            <!-- Thumbnail Swiper -->
-                            <div class="swiper product-gallery-swiper thumb-swiper-lg swiper-vertical">
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <img src="{{ asset($detail_product->image) }}" alt="{{ $detail_product->name }}"
-                                            onclick="changeMainImage('{{ asset($detail_product->image) }}')">
-                                    </div>
-                                    @foreach($detail_product->images ?? [] as $image)
-                                    <div class="swiper-slide">
-                                        <img src="{{ asset($image) }}" alt="{{ $detail_product->name }}"
-                                            onclick="changeMainImage('{{ asset($image) }}')">
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
+                <!-- Product Gallery Section -->
+<div class="col-xl-6 col-md-6">
+    <div class="dz-product-detail sticky-top">
+        <div class="swiper-btn-center-lr">
+            <!-- Main Image Display -->
+            <div class="swiper product-gallery-swiper2">
+                <div class="swiper-wrapper" id="lightgallery">
+                    <div class="swiper-slide">
+                        <div class="dz-media DZoomImage">
+                            <a id="mainImageLink" data-lightbox="product-zoom"
+                                href="{{ asset($detail_product->image) }}">
+                                <img id="mainImage" src="{{ asset($detail_product->image) }}"
+                                    alt="{{ $detail_product->name }}">
+                            </a>
                         </div>
                     </div>
+                    <!-- Additional Images -->
+                    @foreach($detail_product->images ?? [] as $image)
+                    <div class="swiper-slide">
+                        <div class="dz-media DZoomImage">
+                            <a data-lightbox="product-zoom" href="{{ asset($image) }}">
+                                <img src="{{ asset($image) }}" alt="{{ $detail_product->name }}">
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
+            </div>
+
+            <!-- Thumbnail Swiper (Horizontal) -->
+            <div class="swiper product-gallery-swiper thumb-swiper-lg">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="{{ asset($detail_product->image) }}" alt="{{ $detail_product->name }}"
+                            onclick="changeMainImage('{{ asset($detail_product->image) }}')">
+                    </div>
+                    @foreach($detail_product->images ?? [] as $image)
+                    <div class="swiper-slide">
+                        <img src="{{ asset($image) }}" alt="{{ $detail_product->name }}"
+                            onclick="changeMainImage('{{ asset($image) }}')">
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Swiper Initialization Script (Horizontal with larger images) -->
+<script>
+    var swiper = new Swiper('.product-gallery-swiper2', {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+
+    var thumbSwiper = new Swiper('.thumb-swiper-lg', {
+        spaceBetween: 10,
+        slidesPerView: 5,  // Increase this to make images bigger (adjust as needed)
+        freeMode: true,
+        watchSlidesVisibility: true,
+        watchSlidesProgress: true,
+        direction: 'horizontal',  // Horizontal direction
+    });
+</script>
+
+<style>
+    .thumb-swiper-lg .swiper-slide {
+        /* Adjust thumbnail image size */
+        width: 120px;  /* Increase width of the thumbnails */
+        height: 120px;  /* Increase height of the thumbnails */
+    }
+    .thumb-swiper-lg .swiper-slide img {
+        object-fit: cover;  /* Ensure image covers the thumbnail container */
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+
 
                 <!-- Product Details Section -->
                 <div class="col-xl-6 col-md-6">
@@ -129,7 +165,7 @@
 
                                     @php
                                  
-                                    $currencySymbol = 'Ks';
+                                    $currencySymbol = '¥';
                                     $exchangeRate =  1;
                                     @endphp
 
@@ -274,44 +310,7 @@
         document.getElementById('mainImageLink').href = imageUrl;
     }
 
-    // Variant selection event handler
-    // document.querySelectorAll('.variant-option').forEach(button => {
-    //     button.addEventListener('click', function() {
-    //         button.querySelector('input').checked = true;
-    //         document.querySelectorAll('.variant-option').forEach(btn => btn.classList
-    //             .remove('active'));
-    //         button.classList.add('active');
 
-    //         // Update product price based on selected variant
-    //         const variantPrice = button.getAttribute('data-price');
-    //         const show_price_org = Number(button.getAttribute('data-showPrice'));
-    //         console.log("Parsed Original Price:", show_price_org);
-    //         // Ensure exchangeRate is properly converted
-    //         let exchangeRate = {
-    //             {
-    //                 is_numeric($exchangeRate) ? $exchangeRate : 1
-    //             }
-    //         };
-    //         console.log("Parsed Exchange Rate:", exchangeRate);
-
-    //         let show_price = show_price_org * exchangeRate;
-
-    //         let currencySymbol = "{{ $currencySymbol }}";
-    //         document.getElementById('product-price').innerHTML = show_price.toFixed(2) + " " +
-    //             currencySymbol;
-
-
-    //         // Set the selected variant ID in the hidden form field
-    //         document.getElementById('variant_id').value = button.querySelector('input')
-    //             .value;
-
-    //         // Update main image based on selected variant's image
-    //         const variantImage = button.getAttribute('data-image');
-    //         if (variantImage) {
-    //             changeMainImage(variantImage);
-    //         }
-    //     });
-    // });
 
     // Variant selection event handler
 document.querySelectorAll('.variant-option').forEach(button => {

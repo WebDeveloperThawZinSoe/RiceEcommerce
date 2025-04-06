@@ -11,7 +11,10 @@
                 <label for="name" class="form-label">Name</label>
                 <input type="text" name="name" class="form-control" id="name" value="{{ $productCategory->name }}" required>
             </div>
-
+            <div class="form-group">
+                                <label for="order_list">Order <span style="color:gold"> * </span></label>
+                                <input type="number" class="form-control" id="order_list" name="order_list" placeholder="Name" value="{{ $productCategory->order_list }}" required>
+                            </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
                 <textarea name="description" class="form-control" id="description">{{ $productCategory->description }}</textarea>

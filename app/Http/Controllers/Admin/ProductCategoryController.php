@@ -25,6 +25,7 @@ class ProductCategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'order_list' => 'nullable',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -40,6 +41,7 @@ class ProductCategoryController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'icon' => $iconName,
+            'order_list' => $request->order_list,
         ]);
 
         return redirect()->route('admin.product_categories.index')->with('success', 'Product Category created successfully.');
@@ -55,6 +57,7 @@ class ProductCategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'order_list' => 'nullable',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -72,6 +75,7 @@ class ProductCategoryController extends Controller
 
         $productCategory->name = $request->name;
         $productCategory->description = $request->description;
+        $productCategory->order_list = $request->order_list;
         $productCategory->save();
 
         return redirect()->route('admin.product_categories.index')->with('success', 'Product Category updated successfully.');

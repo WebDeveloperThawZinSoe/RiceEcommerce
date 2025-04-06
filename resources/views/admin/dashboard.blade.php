@@ -37,7 +37,7 @@
                                 <i class="anticon anticon-dollar"></i>
                             </div>
                             <div class="m-l-15">
-                                <h2 class="m-b-0">{{$totalPrice}} Ks</h2>
+                                <h2 class="m-b-0">{{$totalPrice}} ¥</h2>
                                 <p class="m-b-0 text-muted">Total Sale</p>
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                                     <tr>
                                         <td>{{ ++$key }}</td>
                                         <td>{{$order_data->order_number}}</td>
-                                        <td>{{$order_data->total_price}} $</td>
+                                        <td>{{$order_data->total_price}} ¥</td>
                                         <td>
                                             @if($order_data->status == 1)
                                             <span class="badge badge-warning">Pending</span>  

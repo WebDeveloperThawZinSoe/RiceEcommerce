@@ -70,7 +70,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h5 class="font-weight-bold">Payment Information</h5>
-                                <p><strong>Total Price:</strong> {{ $order->total_price }} Ks</p>
+                                <p><strong>Total Price:</strong> {{ $order->total_price }} ¥</p>
                                 <p><strong>Payment Method:</strong>
                                     @if($order->payment_method == 0)
                                     {{ 'Cash On Delivery' }}
@@ -133,14 +133,14 @@
                                             } elseif ($DiscountType == 2) { 
                                                 $finalPrice = max(0, $ProductPrice - ($ProductPrice * ($DiscountAmount / 100))); 
                                             }
-                                            echo number_format($finalPrice, 2) . " Ks";
+                                            echo number_format($finalPrice, 2) . " ¥";
                                             ?>
                                         </td>
                                         <td>
                                             <?php 
                                             $qty = $detail->qty;
                                             $finalPrice = $finalPrice *  $qty;
-                                            echo number_format($finalPrice, 2) . " Ks"; 
+                                            echo number_format($finalPrice, 2) . " ¥"; 
                                             ?>
                                         </td>
                                     </tr>

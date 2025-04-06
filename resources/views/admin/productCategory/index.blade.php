@@ -36,6 +36,7 @@
                     <tr>
                         <th>No</th>
                         <th>Name</th>
+                        <th>Order</th>
                         <th>Description</th>
                         <th>Icon</th>
                         <th>Created At</th>
@@ -47,6 +48,7 @@
                     <tr>
                         <td>{{ ++$key }}</td>
                         <td>{{ $category->name }}</td>
+                        <td>{{ $category->order_list }}</td>
                         <td>{{ $category->description }}</td>
                         <td>
                             @if($category->icon)
@@ -90,6 +92,10 @@
                             <div class="form-group">
                                 <label for="name">Name <span style="color:gold"> * </span></label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="order_list">Order <span style="color:gold"> * </span></label>
+                                <input type="number" class="form-control" id="order_list" name="order_list" placeholder="Name" value="{{ old('order_list',10) }}" required>
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>

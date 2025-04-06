@@ -23,7 +23,7 @@
         <p><strong>Customer:</strong> {{ $order->user->name ?? 'Guest' }}</p>
         <p><strong>Email:</strong> {{ $order->user->email ?? 'N/A' }}</p>
         <p><strong>Phone:</strong> {{ $order->user->phone ?? 'N/A' }}</p>
-        <p><strong>Total Price:</strong> {{ number_format($order->total_price, 1) }} Ks</p>
+        <p><strong>Total Price:</strong> {{ number_format($order->total_price, 1) }} ¥</p>
         
         <hr>
 
@@ -82,7 +82,7 @@
                                     $finalPrice = max(0, $ProductPrice - ($ProductPrice * ($DiscountAmount / 100)));
                                 }
                             @endphp
-                            {{ number_format($finalPrice, 1) }} Ks
+                            {{ number_format($finalPrice, 1) }} ¥
                         </td>
                         <td>{{ $detail->qty }}</td>
                     </tr>

@@ -7,14 +7,7 @@
 	<!-- Meta -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="keywords" content="CrossFitSupplyment, gym supplements Myanmar, protein powder Yangon, fitness supplements Mandalay, workout supplements, fitness store Myanmar, whey protein, BCAAs, pre-workout Myanmar, health products Yangon, CrossFit supply Yangon, bodybuilding supplements">
-<meta name="author" content="HugeBinary">
-<meta name="robots" content="index, follow">
-<meta name="description" content="CrossFit Supplyment is a leading gym supplement store in Yangon and Mandalay. We offer high-quality protein powders, BCAAs, pre-workouts, and other fitness products to help you achieve your fitness goals.">
-<meta property="og:title" content="CrossFit Supplyment - Your Trusted Gym Supplement Store in Yangon & Mandalay">
-<meta property="og:description" content="Shop high-quality gym supplements at CrossFit Supplyment in Yangon and Mandalay. Explore protein powders, BCAAs, pre-workouts, and more to boost your fitness journey.">
 
-	<meta name="format-detection" content="telephone=no">
 	@php
     $logo = App\Models\GeneralSetting::where("name","logo")->first();
     $generalSettings = App\Models\GeneralSetting::whereIn('name', [
